@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # HireFlow ATS
 
 A full-stack Applicant Tracking System — Spring Boot + MySQL backend, React + Tailwind frontend.
@@ -68,3 +69,6 @@ All endpoints except `POST /api/auth/**` and `GET /api/jobs/**` require a `Autho
 ## Notes for Git
 
 Both `backend/.gitignore` and `frontend/.gitignore` are already set up to exclude `target/`, `node_modules/`, `dist/`, and IDE files — safe to `git init` and push as-is from the root folder.
+=======
+# hireflow-ats
+>>>>>>> b8ec808cbd2583c8555ca39f7490199a02129f8a
