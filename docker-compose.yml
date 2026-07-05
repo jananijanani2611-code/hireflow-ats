@@ -1,18 +1,19 @@
-# For local development / testing only — spins up MySQL + the backend together.
+# For local development / testing only — spins up Postgres + the backend together.
 # Usage: docker compose up --build
 services:
-  mysql:
-    image: mysql:8.0
+  postgres:
+    image: postgres:16
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: hireflow_ats
-      MYSQL_ROOT_PASSWORD: root
+      POSTGRES_DB: hireflow_ats
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - mysql-data:/var/lib/mysql
+      - pg-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -21,16 +22,16 @@ services:
     build: ./backend
     restart: unless-stopped
     depends_on:
-      mysql:
+      postgres:
         condition: service_healthy
     environment:
-      DB_URL: jdbc:mysql://mysql:3306/hireflow_ats?createDatabaseIfNotExist=true
-      DB_USERNAME: root
-      DB_PASSWORD: root
+      DB_URL: jdbc:postgresql://postgres:5432/hireflow_ats
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
       JWT_SECRET: local_dev_only_secret_change_me_1234567890
       CORS_ALLOWED_ORIGINS: http://localhost:5173
     ports:
       - "8080:8080"
 
 volumes:
-  mysql-data:
+  pg-data:
